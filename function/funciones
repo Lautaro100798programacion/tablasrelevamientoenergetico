@@ -1,0 +1,37 @@
+import tkinter as tk
+import pandas as pd
+from tkinter import filedialog
+
+# crear el data frame
+def crear_df(path):
+    datos = pd.read_excel(path)
+    df1 = pd.DataFrame(datos)
+    return df1
+
+# Carga de archivo (hoja de calculo)
+
+
+def carga_archivos():
+    root = tk.Tk()
+    root.withdraw()
+    # global listadearchivos
+    listadearchivos = filedialog.askopenfilenames(
+        filetypes=[("Archivos de hojas de cálculo XLS", "*.xls *.xlsx *.ods *.csv")])
+    print(listadearchivos)
+    listadearchivos = str(listadearchivos[0])
+    tipo = type(listadearchivos)
+    print(tipo)
+    return listadearchivos
+    # print("Ubicación del archivo PDF seleccionado:", pdf_path)
+
+# Función selecciona Filas y Columnas
+
+
+def seleccion(df, unoregistro, totalfilas, iniciocolumnas, fincolumnas):
+    return df.iloc[unoregistro:totalfilas, iniciocolumnas:fincolumnas]
+
+# Funcion concat
+
+
+def concatenar(dato1, dato2, orientacion, index):
+    return pd.concat([dato1, dato2], axis=orientacion, ignore_index=index)
