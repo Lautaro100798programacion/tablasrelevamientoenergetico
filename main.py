@@ -1,6 +1,7 @@
 import pandas as pd
 import time
-from function.init import *
+from function.funciones import crear_df, carga_archivos, seleccion, concatenar, crearhoja
+
 
 # Mensaje de inicio
 print("Bienvenidos al constructor de la planilla del relevamiento energetico")
@@ -9,7 +10,7 @@ print("Seleccionar el archivo a utilizar")
 time.sleep(4)
 
 
-
+# Unir columnas y filas por seccion
 # carga y elaboración de df
 archivo = carga_archivos()
 df = crear_df(archivo)
@@ -24,7 +25,7 @@ print(numeroDeFilas)
 sel_nombre = seleccion(df, 0, numeroDeFilas, 1, 7)
 
 # seleccionar detalles de los espacios
-sel_detalle_espacio = seleccion(df, 0, numeroDeFilas, 8, 12)
+sel_detalle_espacio = seleccion(df, 0, numeroDeFilas, 8, 13)
 
 # seleccionar climatizacion
 sel_clima_1 = seleccion(df, 0, numeroDeFilas, 18, 35)
@@ -89,10 +90,6 @@ sel_electro_4.columns = nombre_columns_electro
 sel_electro_5 = seleccion(df, 0, numeroDeFilas, 260, 268)
 sel_electro_5.columns = nombre_columns_electro
 
-
-# Unir columnas y filas por seccion
-
-
 # Union de nombre con datos
 UnirConDatos = concatenar(sel_nombre, sel_detalle_espacio, 1, None)
 
@@ -152,20 +149,18 @@ path2 = 'datosretorno/tabla.xlsx'
 armarExcel = pd.ExcelWriter(path2, engine='xlsxwriter')
 
 # hoja de datos
-UnirConDatos.to_excel(armarExcel, sheet_name='DetalleEspacio', index=False)
+crearhoja(UnirConDatos, armarExcel, 'DetalleEspacio')
 # hoja de climatizacion
-unir_clima_v.to_excel(armarExcel, sheet_name='Climatizacion', index=False)
+crearhoja(unir_clima_v, armarExcel, 'Climatizacion')
 # hoja de iluminacion
-unir_ilu_v.to_excel(armarExcel, sheet_name='Iluminación', index=False)
+crearhoja(unir_ilu_v, armarExcel, 'Iluminación')
 # hoja oficina/informatica
-unir_info_v.to_excel(armarExcel, sheet_name='Oficina.Informatico', index=False)
+crearhoja(unir_info_v, armarExcel, 'Oficina.Informatico')
 # hoja industrial/laboratorio
-unir_indu_v.to_excel(
-    armarExcel, sheet_name='Industria.Laboratorio', index=False)
+crearhoja(unir_indu_v, armarExcel, 'Industria.Laboratorio')
 # hoja electrodomesticos
-unir_electro_v.to_excel(
-    armarExcel, sheet_name='Electrodomesticos', index=False)
+crearhoja(unir_electro_v, armarExcel, 'Electrodomesticos')
 
 armarExcel.close()
 
-print(type(armarExcel))
+print('El escaneo a finalizado correctamente')
